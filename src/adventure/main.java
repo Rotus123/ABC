@@ -1,7 +1,10 @@
 package adventure;
+
+import dto.Player;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Random;
+
+import dto.Player;
 
 public class main {
     public static void main(String[] args) {
@@ -13,13 +16,13 @@ public class main {
         jobs.add("사냥꾼");
 
         Scanner scanner = new Scanner(System.in);
-        System.out.print("안녕하세요. 모험가님을 환영합니다. 당신의 닉네임을 입력하세요.\n닉네임 : ");
+        System.out.printf("안녕하세요. 모험가님을 환영합니다. 당신의 닉네임을 입력하세요.\n닉네임 : ");
         String name = scanner.nextLine().trim();
         System.out.println("안녕하세요." + name + "님 반갑습니다.");
         Player player = null; 
 
         while (true) {
-            System.out.print("직업을 선택해 주세요.\n마법사, 전사, 도적, 사제, 사냥꾼\n직업 : ");
+            System.out.printf("직업을 선택해 주세요.\n마법사, 전사, 도적, 사제, 사냥꾼\n직업 : ");
             String role = scanner.nextLine().trim();
             if (jobs.contains(role)) {
                 System.out.printf("직업은 %s로 선택되었습니다.\n%s님은 레벨1 %s입니다.\n(도움말을 보고싶다면 언제든 \"도움\"를 입력하세요.)", role, name, role);
@@ -59,45 +62,3 @@ public class main {
     	        }
     }
     }
-
-class Player {
-    String name;
-    String role;
-    int level;
-    int health;
-    int attack;
-    int defense;
-    int speed;
-    int luck;
-    	public Player(String name, String role, int level, int health, int attack, int defense, int speed, int luck) {
-	        this.name = name;
-	        this.role = role;
-	        this.level = level;
-	        this.health = health;
-	        this.attack = attack;
-	        this.defense = defense;
-	        this.speed = speed;
-	        this.luck = luck;
-	    }
-    void move() { //이동
-        System.out.println("이동합니다.");
-    }
-    void search() { //탐색
-        System.out.println("탐색합니다.");
-    }
-    void attack() { //공격
-        System.out.println("공격합니다.");
-    }
-    void defense() { //방어
-        System.out.println("방어합니다.");
-    }
-    void escape() { //도망
-        System.out.println("도망갑니다.");
-    }
-    void useItem() { //아이템사용
-        System.out.println("아이템을 사용합니다.");
-    }
-    void showStatus() { //상태
-        System.out.printf("%s (Lv.%d %s)\n체력 : %d\n공격력 : %d\n방어력 : %d\n공속 : %d\n운 : %d\n", name, level, role, health, attack, defense, speed, luck);
-    }
-}
