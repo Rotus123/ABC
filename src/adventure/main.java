@@ -1,5 +1,6 @@
 package adventure;
 
+import dto.Monster;
 import dto.Player;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -12,7 +13,6 @@ public class main {
         jobs.add("마법사");
         jobs.add("전사");
         jobs.add("도적");
-        jobs.add("사제");
         jobs.add("사냥꾼");
 
         Scanner scanner = new Scanner(System.in);
@@ -48,7 +48,19 @@ public class main {
     	            System.out.println("아이템: 아이템을 사용합니다");
     	            System.out.println("상태: 현재 상태를 확인합니다.");
     	        } else if (command.equals("이동")) {
-    	            player.move();
+    	            double random = Math.random();
+    	            if (random < 0.7) { // 70% 확률로 몬스터를 만남
+    	                System.out.println("몬스터를 만났습니다!");
+    	                Monster monster = new Monster("고블린", 1, 8, 5, 1, 1, 1);
+    	                System.out.printf("[%s 전투 시작]\n", monster.getName());
+    	                battle(player, monster);
+    	            } else if (random < 0.9) { // 20% 확률로 아이템을 발견
+    	                System.out.println("아이템을 발견했습니다!");
+/*    	                Item item = new Item("체력 포션", "체력을 10 회복합니다.");
+    	                player.addItem(item); */
+    	            } else { // 10% 확률로 아무것도 없음
+    	                System.out.println("이동하였으나, 그곳엔 아무것도 없었습니다.");
+    	            }
     	        } else if (command.equals("탐색")) {
     	            player.search();
     	        } else if (command.equals("공격")) {
@@ -61,4 +73,52 @@ public class main {
     	            player.useItem();
     	        }
     }
+    		
+    private static void battle(Player player, Monster monster) {
+        Scanner scanner = new Scanner(System.in);
+        
+   	        while (player.health > 0 && monster.health > 0) {
+   	            player.showStatus();
+   	            monster.showStatus();
+   	            System.out.print("명령어를 입력하세요. (도움말-도움)\n");
+   	            String command = scanner.nextLine().trim();
+   	            if (command.equals("도움")) {
+   	                System.out.println("도움: 도움말을 호출합니다.");
+   	                System.out.println("공격: 몬스터를 공격합니다.");
+   	                System.out.println("아이템: 아이템을 사용합니다.");
+  	            } else if (command.equals("공격")) {
+   	                player.attack(monster);
+   	                if (monster.health > 0) {
+   	                    monster.attack(player);
+    	                }
+/*   	            } else if (command.equals("아이템")) {
+   	                Item[] items = player.getItems();
+   	                if (items.length == 0) {
+   	                    System.out.println("소지한 아이템이 없습니다.");
+                 } else {
+ 	                 System.out.println("사용할 아이템을 선택하세요.");
+   	                 for (int i = 0; i < items.length; i++) {
+                         System.out.printf("%d. %s\n", i + 1, items[i].getName());
+    	                    }
+                      int index = scanner.nextInt();
+                      scanner.nextLine(); // 버퍼 비우기
+                      if (index < 1 || index > items.length) {
+                        System.out.println("잘못된 입력입니다.");
+                      } else {
+    	                 player.useItem(items[index - 1]);
+    	                    }
+    	                } */
+    	            } else {
+    	                System.out.println("잘못된 명령어입니다.");
+    	            }
+    	        }
+    	        if (player.health > 0) {
+    	            System.out.printf("%s를 물리쳤습니다!\n", monster.getName());
+    	      /*    int exp = monster.getLevel() * 10;
+    	            System.out.printf("%d의 경험치를 얻습니다.\n", exp);
+    	            player.gainExp(exp); */
+    	        } else {
+    	            System.out.println("당신은 사망했습니다...");
+    	        }
     }
+}

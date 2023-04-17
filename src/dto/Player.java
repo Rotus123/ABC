@@ -3,12 +3,12 @@ package dto;
 public class Player {
     String name;
     String role;
-    int level;
-    int health;
-    int attack;
-    int defense;
-    int speed;
-    int luck;
+    public int level;
+    public int health;
+    public int attack;
+    public int defense;
+    public int speed;
+    public int luck;
     public Player(String name, String role, int level, int health, int attack, int defense, int speed, int luck) {
 	        this.name = name;
 	        this.role = role;
@@ -24,6 +24,16 @@ public class Player {
     }
     public void search() { //탐색
         System.out.println("탐색합니다.");
+    }
+    
+    public void attack(Monster monster) {
+        System.out.printf("%s(이)가 %s(을)를 공격합니다.\n", name, monster.name);
+        int damage = attack - monster.defense;
+        if (damage < 0) {
+            damage = 0;
+        }
+        monster.health -= damage;
+        System.out.printf("%s(은)는 %s(으)로부터 %d의 피해를 입었습니다.\n", monster.name, name, damage);
     }
     public void attack() { //공격
         System.out.println("공격합니다.");
