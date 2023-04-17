@@ -2,6 +2,8 @@ package adventure;
 
 import dto.Monster;
 import dto.Player;
+import dto.Inventory;
+import dto.Item;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,6 +15,7 @@ public class main {
         jobs.add("마법사");
         jobs.add("전사");
         jobs.add("도적");
+        jobs.add("사제");
         jobs.add("사냥꾼");
 
         Scanner scanner = new Scanner(System.in);
@@ -56,8 +59,9 @@ public class main {
     	                battle(player, monster);
     	            } else if (random < 0.9) { // 20% 확률로 아이템을 발견
     	                System.out.println("아이템을 발견했습니다!");
-/*    	                Item item = new Item("체력 포션", "체력을 10 회복합니다.");
-    	                player.addItem(item); */
+    	                Item item = new Item("체력 포션", 10);
+    	                System.out.printf("%s 아이템을 획득했습니다.%d", item.getName(), item.getValue());
+    	                Inventory.addItemToInventory(item);
     	            } else { // 10% 확률로 아무것도 없음
     	                System.out.println("이동하였으나, 그곳엔 아무것도 없었습니다.");
     	            }
