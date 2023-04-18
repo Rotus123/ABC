@@ -1,4 +1,8 @@
 package dto;
+import dto.Inventory;
+import dto.Item;
+import java.util.ArrayList;
+
 
 public class Player {
     String name;
@@ -9,6 +13,7 @@ public class Player {
     public int defense;
     public int speed;
     public int luck;
+    private Item[] items;
     public Player(String name, String role, int level, int health, int attack, int defense, int speed, int luck) {
 	        this.name = name;
 	        this.role = role;
@@ -18,7 +23,10 @@ public class Player {
 	        this.defense = defense;
 	        this.speed = speed;
 	        this.luck = luck;
-	    }
+	        }
+    public ArrayList<Item> getInventory() {
+        return Inventory.getInventory();
+    }
     public void move() { //이동
         System.out.println("이동합니다.");
     }
@@ -44,8 +52,20 @@ public class Player {
     public void escape() { //도망
         System.out.println("도망갑니다.");
     }
-    public void useItem() { //아이템사용
-        System.out.println("아이템을 사용합니다.");
+    public void useItem(Item item) {
+        boolean isInInventory = false;
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] == item) {
+                isInInventory = true;
+                items[i] = null;
+                health += item.getValue();
+                System.out.printf("%s 아이템을 사용하여 체력이 %d 증가했습니다.\n", item.getName(), item.getValue());
+                break;
+            }
+        }
+        if (!isInInventory) {
+            System.out.printf("%s 아이템이 인벤토리에 없습니다.\n", item.getName());
+        }
     }
     public void showStatus() { //상태
         System.out.printf("%s (Lv.%d %s)\n체력 : %d\n공격력 : %d\n방어력 : %d\n공속 : %d\n운 : %d\n", name, level, role, health, attack, defense, speed, luck);

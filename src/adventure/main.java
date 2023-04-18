@@ -7,17 +7,17 @@ import dto.Item;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import dto.Player;
 
 public class main {
     public static void main(String[] args) {
+    	ArrayList<Inventory> inventory = new ArrayList<>();
         ArrayList<String> jobs = new ArrayList<>();
         jobs.add("마법사");
         jobs.add("전사");
         jobs.add("도적");
         jobs.add("사제");
         jobs.add("사냥꾼");
-
+        
         Scanner scanner = new Scanner(System.in);
         System.out.printf("안녕하세요. 모험가님을 환영합니다. 당신의 닉네임을 입력하세요.\n닉네임 : ");
         String name = scanner.nextLine().trim();
@@ -39,8 +39,8 @@ public class main {
     		String command = scanner.nextLine().trim();
     		executeCommand(command, player);
         }
-    }		
-    		private static void executeCommand(String command, Player player) {
+    }
+		private static void executeCommand(String command, Player player) {
     	        if(command.equals("도움")) {
     	            System.out.println("도움: 도움말을 호출합니다.");
     	            System.out.println("이동: 플레이어가 움직입니다.");
@@ -52,21 +52,23 @@ public class main {
     	            System.out.println("상태: 현재 상태를 확인합니다.");
     	        } else if (command.equals("이동")) {
     	            double random = Math.random();
-    	            if (random < 0.7) { // 70% 확률로 몬스터를 만남
+    	            if (random < 0.1) { // 70% 확률로 몬스터를 만남
     	                System.out.println("몬스터를 만났습니다!");
     	                Monster monster = new Monster("고블린", 1, 8, 5, 1, 1, 1);
     	                System.out.printf("[%s 전투 시작]\n", monster.getName());
     	                battle(player, monster);
-    	            } else if (random < 0.9) { // 20% 확률로 아이템을 발견
+    	            } else if (random < 0.9){ // 20% 확률로 아이템을 발견
     	                System.out.println("아이템을 발견했습니다!");
     	                Item item = new Item("체력 포션", 10);
-    	                System.out.printf("+%d %s 아이템을 획득했습니다.", item.getName(), item.getValue());
+    	                System.out.printf("아이템 \"%s(+%d)\"을 발견했습니다.", item.name, item.value);
     	                Inventory.addItemToInventory(item);
     	            } else { // 10% 확률로 아무것도 없음
     	                System.out.println("이동하였으나, 그곳엔 아무것도 없었습니다.");
     	            }
     	        } else if (command.equals("탐색")) {
     	            player.search();
+    	        } else if (command.equals("인벤")) {
+    	            Inventory.printInventory();
     	        } else if (command.equals("공격")) {
     	            player.attack();
     	        } else if (command.equals("방어")) {
@@ -75,6 +77,8 @@ public class main {
     	            player.escape();
     	        } else if (command.equals("아이템")) {
     	            player.useItem();
+    	        } else if (command.equals("상태")) {
+    	            player.showStatus();
     	        }
     }
     		
@@ -95,23 +99,24 @@ public class main {
    	                if (monster.health > 0) {
    	                    monster.attack(player);
     	                }
-/*   	            } else if (command.equals("아이템")) {
-   	                Item[] items = player.getItems();
-   	                if (items.length == 0) {
-   	                    System.out.println("소지한 아이템이 없습니다.");
-                 } else {
- 	                 System.out.println("사용할 아이템을 선택하세요.");
-   	                 for (int i = 0; i < items.length; i++) {
-                         System.out.printf("%d. %s\n", i + 1, items[i].getName());
-    	                    }
-                      int index = scanner.nextInt();
-                      scanner.nextLine(); // 버퍼 비우기
-                      if (index < 1 || index > items.length) {
-                        System.out.println("잘못된 입력입니다.");
-                      } else {
-    	                 player.useItem(items[index - 1]);
-    	                    }
-    	                } */
+  	            } else if (command.equals("아이템")) {
+  	        	ArrayList<Item> inventory = player.getInventory();
+  	        	if (inventory.size() == 0) {
+  	        	System.out.println("소지한 아이템이 없습니다.");
+  	        	} else {
+  	        	System.out.println("사용할 아이템을 선택하세요.");
+  	        	for (int i = 0; i < inventory.size(); i++) {
+  	        	System.out.printf("%d. %s\n", i + 1, inventory.get(i).getName());
+  	        	}
+  	        	int index = scanner.nextInt();
+  	        	scanner.nextLine(); // 버퍼 비우기
+  	        	if (index < 1 || index > inventory.size()) {
+  	        	System.out.println("잘못된 입력입니다.");
+  	        	} else {
+  	        	player.useItem(inventory.get(index - 1));
+  	        	inventory.remove(index - 1);
+  	        	}
+  	        	}
     	            } else {
     	                System.out.println("잘못된 명령어입니다.");
     	            }
